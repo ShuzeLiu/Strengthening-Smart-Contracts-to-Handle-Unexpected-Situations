@@ -1,0 +1,114 @@
+
+namespace org.selection.v1
+asset Course identified by courseName {
+    o String courseName
+    
+    o Integer capacity  default=2
+    o Integer credits  default=4
+    o Integer price default=4
+  
+    o Integer actualStudentNumber default=0
+    --> Student [] actualStudent
+}
+  
+  
+asset Pool identified by poolName {
+    o String poolName
+    
+    o String[] action
+    o Integer targetValue
+   --> Course targetCourse 
+   --> Student targetStudent 
+    o Integer totalNumber default=0
+
+    o Double  totalAgree default=0.0
+    o Double  totalDisagree default=0.0  
+
+    --> Student[] actualStudent 
+    o Double[]   agreeData 
+    
+  
+}
+
+concept Learning{
+   o String type
+   o Double[] feature
+   o Double agree
+   o Integer time
+  
+}
+  
+participant Student identified by studentId {
+    o String studentId
+    
+    o String firstName
+    o String lastName
+    
+    o Integer registeredCredits default=0
+    o Integer totalCredits      default=0
+    
+    o Integer studentYear default= 1
+    --> Course[] registeredCourse
+  
+    o Double rewards default=0.0
+    
+    --> Student[] delegateStudent 
+    o Integer delegatedState default=0
+    --> Student targetDelegate   
+  
+    o Double  learningAgree
+    o Integer time
+   
+}
+
+
+
+transaction add {
+    -->Course course
+    -->Student newStudent
+}
+
+transaction drop {
+    --> Course course
+    --> Student newStudent
+}
+  
+transaction endSemester{
+
+
+}
+ 
+transaction decreasePrice{
+
+}
+  
+transaction startVotingSystem{
+   o String newPoolName
+   o String[] action
+   o Integer targetValue
+   --> Course targetCourse 
+   --> Student targetStudent 
+} 
+  
+transaction submitVote{
+   --> Student votingStudent
+   --> Pool votingPool
+   o Double agree
+   o Double disagree
+} 
+
+transaction endVotingSystem{
+   --> Pool votingPool
+ 
+} 
+
+transaction delegateStudent{
+   --> Student individual
+   --> Student targetDelegate
+ 
+} 
+  
+transaction cancleDelegate{
+   --> Student individual
+ 
+} 
